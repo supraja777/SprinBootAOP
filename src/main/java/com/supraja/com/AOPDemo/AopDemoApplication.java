@@ -20,9 +20,24 @@ public class AopDemoApplication {
 	public CommandLineRunner commandLineRunner (AccountDAO accountDAO, MembershipDAO membershipDAO) {
 			return runner -> {
 //				demoTheBeforeAdvice(accountDAO, membershipDAO);
-//				demoTheAfterAdvice(accountDAO, membershipDAO);
-				demoTheAfterThrowingAdvice(accountDAO, membershipDAO);
+//				demoTheAfterReturningAdvice(accountDAO, membershipDAO);
+//				demoTheAfterThrowingAdvice(accountDAO, membershipDAO);
+				demoTheAfterAdvice(accountDAO, membershipDAO);
 			};
+	}
+
+	private void demoTheAfterAdvice(AccountDAO accountDAO, MembershipDAO membershipDAO) {
+		List<Account> accountList  = null;
+
+		try {
+			boolean tripWire = false;
+			accountList = accountDAO.findAccounts(tripWire);
+		} catch (Exception exc ) {
+			System.out.println("Caught exception ---- " +exc);
+		}
+
+
+		System.out.println("Account List AfterAdvice " + accountList);
 	}
 
 	private void demoTheAfterThrowingAdvice(AccountDAO accountDAO, MembershipDAO membershipDAO) {
@@ -39,7 +54,7 @@ public class AopDemoApplication {
 		System.out.println("Account List AfterThrowingAdvice " + accountList);
 	}
 
-	private void demoTheAfterAdvice(AccountDAO accountDAO, MembershipDAO membershipDAO) {
+	private void demoTheAfterReturningAdvice(AccountDAO accountDAO, MembershipDAO membershipDAO) {
 		List<Account> accountList  = accountDAO.findAccounts();
 
 		System.out.println("Account List " + accountList);

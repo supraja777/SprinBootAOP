@@ -13,6 +13,13 @@ import java.util.List;
 @Order(3)
 public class MyDemoLoggingAspect {
 
+    // New Method for AfterAdvice
+    @After("execution(* com.supraja.com.AOPDemo.dao.AccountDAO.find*(..))")
+    public void afterFinallyForFindAccounts(JoinPoint theJoinPoint) {
+        String method = theJoinPoint.getSignature().toShortString();
+
+        System.out.println("Method name for AfterFinally " + method);
+    }
 
     // New method for AfterThrowing
     @AfterThrowing(pointcut = "execution(* com.supraja.com.AOPDemo.dao.AccountDAO.find*(..))",
