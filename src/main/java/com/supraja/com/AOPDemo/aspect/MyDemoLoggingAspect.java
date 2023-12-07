@@ -2,6 +2,7 @@ package com.supraja.com.AOPDemo.aspect;
 
 import com.supraja.com.AOPDemo.Account;
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -13,7 +14,49 @@ import java.util.List;
 @Order(3)
 public class MyDemoLoggingAspect {
 
-    // New Method for AfterAdvice
+
+    // New Method for Around Advice
+    @Around("execution(* com.supraja.com.AOPDemo.service.TrafficFortuneService.get*(..))")
+    public Object aroundAdviceForGetFortune(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
+        String method = proceedingJoinPoint.getSignature().toShortString();
+
+        System.out.println("Method name for Around " + method);
+
+        System.out.println("Starting the function");
+
+        long begin = System.currentTimeMillis();
+
+        Object result = null;
+
+        try {
+          result = proceedingJoinPoint.proceed();
+        } catch (Exception ex) {
+            System.out.println("Exception thrown in Around advice");
+
+            //Re-throwing the exception
+            throw ex;
+
+            // Code for handling the exception --
+//            System.out.println("Modifying the result!!!!!");
+//            result = " Everything is working fine";
+        }
+
+
+        long end = System.currentTimeMillis();
+
+        System.out.println("Completed the function");
+
+        System.out.println("Result in around " + result);
+
+        long duration = end-begin;
+
+        System.out.println("Duration taken by the program -- " + duration);
+
+        return result;
+
+    }
+
+    // New Method for After Advice
     @After("execution(* com.supraja.com.AOPDemo.dao.AccountDAO.find*(..))")
     public void afterFinallyForFindAccounts(JoinPoint theJoinPoint) {
         String method = theJoinPoint.getSignature().toShortString();
