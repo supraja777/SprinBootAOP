@@ -2,10 +2,7 @@ package com.supraja.com.AOPDemo.aspect;
 
 import com.supraja.com.AOPDemo.Account;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.AfterReturning;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.annotation.*;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +12,20 @@ import java.util.List;
 @Component
 @Order(3)
 public class MyDemoLoggingAspect {
+
+
+    // New method for AfterThrowing
+    @AfterThrowing(pointcut = "execution(* com.supraja.com.AOPDemo.dao.AccountDAO.find*(..))",
+    throwing = "theExc"
+    )
+    public void afterThrowingForFindAccounts(JoinPoint theJoinPoint, Throwable theExc) {
+        String method = theJoinPoint.getSignature().toShortString();
+
+        System.out.println("Method name for AfterThrowing " + method);
+
+        System.out.println("Logging the exception in AfterThrowing " + theExc);
+
+    }
 
     // Add a new method for afterReturningAspect
     @AfterReturning(
